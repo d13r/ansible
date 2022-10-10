@@ -1,0 +1,4 @@
+# For now I'm keeping it simple by only splitting the servers into dev/prod.
+# In the future, I may add more variables to give me more flexibility.
+is_dev: false
+is_prod: false

@@ -1,7 +1,7 @@
 - hosts: all
   tasks:
 
-    - name: Install standard APT packages
+    - name: Install common APT packages
       ansible.builtin.apt:
         name:
           - bat
@@ -19,6 +19,15 @@
           - tree
           - whois
         state: present
+
+    - name: Install development APT packages
+      ansible.builtin.apt:
+        name:
+          #- default-jre     # For PhpStorm ??
+          - fonts-firacode  # For PhpStorm
+          - openjfx         # For rendering Markdown in PhpStorm
+        state: present
+      when: is_dev
 
     - name: Install/upgrade Delta
       ansible.builtin.apt:
@@ -46,3 +55,10 @@
           - thefuck
           - git+https://github.com/joh/when-changed#master
         state: latest
+
+    - name: Install PhpStorm
+      community.general.snap:
+        name: phpstorm
+        classic: yes
+        state: present
+      when: is_dev
