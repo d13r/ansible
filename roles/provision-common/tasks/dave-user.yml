@@ -1,0 +1,9 @@
+- name: Create 'dave' user
+  ansible.builtin.user:
+    comment: Dave James Miller
+    groups: [adm, sudo, www-data]
+    name: dave
+    # The password is for 'sudo' and webmail, not for SSH
+    password: '{{ dave_user_password | password_hash("sha512", 65534 | random(seed=inventory_hostname) | string) }}'
+    state: present
+  tags: [user]

@@ -1,15 +1,2 @@
-- name: Install development APT packages
-  ansible.builtin.apt:
-    name:
-      - chromium-browser  # PhpStorm requires a browser to activate it
-      - default-jre       # For PhpStorm
-      - fonts-firacode    # My preferred font for PhpStorm
-      - libgdm-dev        # For PhpStorm
-      - openjfx           # For rendering Markdown in PhpStorm
-    state: present
-
-- name: Install PhpStorm
-  community.general.snap:
-    name: phpstorm
-    classic: yes
-    state: present
+- ansible.builtin.import_tasks: install.yml
+  tags: [install]

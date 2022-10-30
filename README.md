@@ -36,6 +36,16 @@ Run the provisioner on all servers:
 ansible-playbook provision.yml
 ```
 
+Run tasks with a specific tag (or multiple tags):
+
+```bash
+ansible-playbook provision.yml -t dev
+ansible-playbook provision.yml -t install
+ansible-playbook provision.yml -t 'dev,&install'
+
+ansible-playbook provision.yml --list-tags
+```
+
 Edit a passwords file:
 
 ```bash

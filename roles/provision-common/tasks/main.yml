@@ -1,64 +1,8 @@
-- name: Create 'dave' user
-  ansible.builtin.user:
-    comment: Dave James Miller
-    groups: [adm, sudo, www-data]
-    name: dave
-    # The password is for 'sudo' and webmail, not for SSH
-    password: '{{ dave_user_password | password_hash("sha512", 65534 | random(seed=inventory_hostname) | string) }}'
-    state: present
+- ansible.builtin.import_tasks: dave-user.yml
+  tags: [dave-user]
 
-- name: Generate locales
-  community.general.locale_gen:
-    name: '{{ item }}'
-  loop:
-    - en_GB
-    - en_GB.UTF-8
-    - en_US
-    - en_US.UTF-8
+- ansible.builtin.import_tasks: locales.yml
+  tags: [locales]
 
-- name: Install common APT packages
-  ansible.builtin.apt:
-    name:
-      - bat
-      - dos2unix
-      - fzf
-      - iotop
-      - jq
-      - mlocate
-      - moreutils # Includes sponge
-      - ncdu
-      - net-tools # Includes netstat
-      - python3-pip
-      - pv
-      - rename
-      - tree
-      - whois
-    state: present
-    update_cache: yes
-
-- name: Install/upgrade Delta
-  ansible.builtin.apt:
-    # https://github.com/dandavison/delta/releases
-    deb: https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb
-    state: present
-
-- name: Install/upgrade duf
-  ansible.builtin.apt:
-    # https://github.com/muesli/duf/releases
-    deb: https://github.com/muesli/duf/releases/download/v0.8.1/duf_0.8.1_linux_amd64.deb
-    state: present
-
-- name: Install Lazy Git
-  ansible.builtin.shell: |
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"v*([^"]+)".*/\1/')
-    curl -fsSL "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
-      | tar zx -C /usr/local/bin/ lazygit
-    creates=/usr/local/bin/lazygit
-
-- name: Install/upgrade Python packages
-  ansible.builtin.pip:
-    name:
-      - httpie
-      - thefuck
-      - git+https://github.com/joh/when-changed#master
-    state: latest
+- ansible.builtin.import_tasks: install.yml
+  tags: [install]
