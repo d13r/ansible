@@ -119,7 +119,7 @@ Create DNS records (I [use Terraform](https://github.com/d13r/terraform/blob/771
 | `<host>.djm.me`   | TXT   | `v=spf1 include:spf.messagingengine.com a:home.djm.me -all` |
 | `*.<host>.djm.me` | CNAME | `<host>.djm.me`                                             |
 
-Now it should be possible to reconnect from WSL using SSH instead of `multipass shell`:
+Now it should be possible to connect from WSL using SSH instead of `multipass shell`:
 
 ```bash
 ssh ubuntu@<host>.djm.me
