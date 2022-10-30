@@ -7,3 +7,9 @@
     password: '{{ dave_user_password | password_hash("sha512", 65534 | random(seed=inventory_hostname) | string) }}'
     state: present
   tags: [user]
+
+- name: Configure authorized_keys for 'dave'
+  ansible.posix.authorized_key:
+    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEApH2uQjVOlpn8jW4X5WnQgpQPmr3GjF/oHDAmODqPAXQuTQ1pvfMgS/Kp+H9p+h16B3SJYMxBvOdirGJjaLh1TDBNb1iw8tP9TDrfze5gAwn8C7UFXlCwZe2TnTWT07CxHiyoChD5YtfSWGsRzS7NFLkNT3oJVaHh8Xmvzz/5gpF8adUJlQT1Vl3OHWM2l27/HWCzkSY/uVwUKrVCfnP+SQxnQzR456uC3v36PFFXarpsl8l7uDVgTbZOnXzamU7e4v7aKEIp2SeXzsZV4Ve+X67zbp3Zyb6ZFtU1AXgvfJJUmKfTaukEy1Ju9VdtDcP/BFbgaYow54Rp6lEqjlNd5w== d@djm.me'
+    state: present
+    user: dave
