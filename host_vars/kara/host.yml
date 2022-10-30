@@ -1,3 +1,1 @@
 ansible_host: kara.djm.me
-ansible_user: ubuntu
-ansible_become: yes
