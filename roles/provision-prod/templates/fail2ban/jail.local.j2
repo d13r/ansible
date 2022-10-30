@@ -1,0 +1,31 @@
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+#
+# {{ ansible_managed }}
+#
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+
+# Tip: To unban an IP, e.g. if you lock yourself out, run:
+#   sudo fail2ban-client set <service> unbanip <ip>
+# e.g.
+#   sudo fail2ban-client set apache-auth unbanip 192.168.5.1
+
+[DEFAULT]
+
+# An IP is banned if it has 'maxretry' failures in the last 'findtime' seconds
+# 10 tries per 10 minutes
+maxretry = 10
+findtime = 600
+
+# Number of seconds that an IP is banned
+bantime = 600
+
+[sshd]
+enabled = true
+
+# TODO
+# [apache-auth]
+# enabled = true

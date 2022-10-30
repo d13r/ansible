@@ -1,0 +1,22 @@
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+    policy: reject
+
+- name: Allow SSH traffic through firewall
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: '22'
+
+- name: Allow HTTP traffic through firewall
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: '80'
+
+- name: Allow HTTPS traffic through firewall
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: '443'

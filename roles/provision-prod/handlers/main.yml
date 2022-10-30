@@ -1,0 +1,4 @@
+- name: Reload Fail2Ban
+  ansible.builtin.systemd:
+    name: fail2ban
+    state: reloaded

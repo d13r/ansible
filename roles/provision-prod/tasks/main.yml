@@ -1,1 +1,8 @@
-# Nothing yet
+- ansible.builtin.import_tasks: install.yml
+  tags: [install]
+
+- ansible.builtin.import_tasks: firewall.yml
+  tags: [firewall]
+
+- ansible.builtin.import_tasks: fail2ban.yml
+  tags: [fail2ban]

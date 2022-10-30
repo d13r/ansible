@@ -1,0 +1,6 @@
+- name: Install production APT packages
+  ansible.builtin.apt:
+    name:
+      - ufw
+    state: present
+  tags: [apt]
