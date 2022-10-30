@@ -2,7 +2,7 @@
 
 This repo contains a playbook that I use to provision my Ubuntu servers (development and production).
 
-## Usage
+## Setup
 
 Install Ansible:
 
@@ -16,9 +16,14 @@ Clone the repo:
 ```bash
 git clone git@github.com:d13r/ansible.git
 cd ansible
+vim vault-password.txt
 ```
 
-Test the connection to a specific server:
+Enter the vault password and save the file.
+
+## Usage
+
+Test the connection to a specific server and print variables:
 
 ```bash
 # '-l' is shorthand for '--limit'
@@ -29,6 +34,18 @@ Run the provisioner on all servers:
 
 ```bash
 ansible-playbook provision.yml
+```
+
+Edit a passwords file:
+
+```bash
+ansible-vault edit host_vars/<host>/passwords.yml
+```
+
+Change the vault password:
+
+```bash
+ansible-vault rekey --ask-vault-password host_vars/*/passwords.yml
 ```
 
 ## Setting up a new production VM
