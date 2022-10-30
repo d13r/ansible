@@ -1,0 +1,54 @@
+- name: Generate locales
+  community.general.locale_gen:
+    name: '{{ item }}'
+  loop:
+    - en_GB
+    - en_GB.UTF-8
+    - en_US
+    - en_US.UTF-8
+
+- name: Install common APT packages
+  ansible.builtin.apt:
+    name:
+      - bat
+      - dos2unix
+      - fzf
+      - iotop
+      - jq
+      - mlocate
+      - moreutils # Includes sponge
+      - ncdu
+      - net-tools # Includes netstat
+      - python3-pip
+      - pv
+      - rename
+      - tree
+      - whois
+    state: present
+
+- name: Install/upgrade Delta
+  ansible.builtin.apt:
+    # https://github.com/dandavison/delta/releases
+    deb: https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb
+    state: present
+
+- name: Install/upgrade duf
+  ansible.builtin.apt:
+    # https://github.com/muesli/duf/releases
+    deb: https://github.com/muesli/duf/releases/download/v0.8.1/duf_0.8.1_linux_amd64.deb
+    state: present
+
+- name: Install Lazy Git
+  ansible.builtin.shell: |
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"v*([^"]+)".*/\1/')
+    curl -fsSL "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
+      | tar zx -C /usr/local/bin/ lazygit
+    creates=/usr/local/bin/lazygit
+
+- name: Install/upgrade Python packages
+  ansible.builtin.pip:
+    name:
+      - httpie
+      - thefuck
+      - git+https://github.com/joh/when-changed#master
+    state: latest
