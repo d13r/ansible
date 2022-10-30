@@ -1,0 +1,36 @@
+# Scripts are based on https://djm.me/cfg but quiet and non-interactive
+- name: Install Dotfiles in 'dave' account
+  ansible.builtin.shell: |
+    set -o nounset -o pipefail -o errexit
+    cd
+    git init -q
+    git remote add origin "https://github.com/davejamesmiller/dotfiles.git"
+    git remote set-url --push origin "git@github.com:davejamesmiller/dotfiles.git"
+    git fetch -q --depth=1 origin
+    rm -f .bashrc .bash_profile .sudo_as_admin_successful
+    git checkout origin/main -b main
+    .dotfiles/post-install --unattended
+
+    executable=/bin/bash
+    creates=/home/dave/.git
+
+  become: yes
+  become_user: dave
+
+- name: Install Dotfiles in root account
+  ansible.builtin.shell: |
+    set -o nounset -o pipefail -o errexit
+    cd /root/
+    git init -q
+    git remote add origin "https://github.com/davejamesmiller/dotfiles.git"
+    git remote set-url --push origin "git@github.com:davejamesmiller/dotfiles.git"
+    git fetch -q --depth=1 origin
+    rm -f .bashrc .bash_profile .sudo_as_admin_successful
+    git checkout origin/main -b main
+    .dotfiles/post-install --unattended
+
+    executable=/bin/bash
+    creates=/root/.git
+
+  become: yes
+  become_user: root
