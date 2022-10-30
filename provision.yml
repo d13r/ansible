@@ -1,6 +1,15 @@
 - hosts: all
   tasks:
 
+    - name: Generate locales
+      community.general.locale_gen:
+        name: '{{ item }}'
+      loop:
+        - en_GB
+        - en_GB.UTF-8
+        - en_US
+        - en_US.UTF-8
+
     - name: Install common APT packages
       ansible.builtin.apt:
         name:
@@ -10,9 +19,9 @@
           - iotop
           - jq
           - mlocate
-          - moreutils # sponge
+          - moreutils # Includes sponge
           - ncdu
-          - net-tools # netstat
+          - net-tools # Includes netstat
           - python3-pip
           - pv
           - rename
@@ -23,9 +32,11 @@
     - name: Install development APT packages
       ansible.builtin.apt:
         name:
-          #- default-jre     # For PhpStorm ??
-          - fonts-firacode  # For PhpStorm
-          - openjfx         # For rendering Markdown in PhpStorm
+          - chromium-browser  # PhpStorm requires a browser to activate it
+          - default-jre       # For PhpStorm
+          - fonts-firacode    # My preferred font for PhpStorm
+          - libgdm-dev        # For PhpStorm
+          - openjfx           # For rendering Markdown in PhpStorm
         state: present
       when: is_dev
 
