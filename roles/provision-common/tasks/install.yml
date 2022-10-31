@@ -3,6 +3,7 @@
     name:
       - acl # For Ansible - https://docs.ansible.com/ansible-core/2.12/user_guide/become.html#risks-of-becoming-an-unprivileged-user
       - bat
+      - chrony # NTP
       - dos2unix
       - fzf
       - iotop
