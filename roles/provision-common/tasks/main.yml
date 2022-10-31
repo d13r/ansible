@@ -7,6 +7,9 @@
 - ansible.builtin.import_tasks: install.yml
   tags: [install]
 
+- ansible.builtin.import_tasks: sudo.yml
+  tags: [sudo]
+
 - ansible.builtin.import_tasks: dave-user.yml
   tags: [dave-user]
 
