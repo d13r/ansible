@@ -1,6 +1,9 @@
 - ansible.builtin.import_tasks: hostname.yml
   tags: [hostname]
 
+- ansible.builtin.import_tasks: timezone.yml
+  tags: [timezone]
+
 - ansible.builtin.import_tasks: locales.yml
   tags: [locales]
 
