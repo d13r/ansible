@@ -1,0 +1,20 @@
+- name: Disable cloud-init automatic hostname
+  ansible.builtin.template:
+    src: cloud.cfg.j2
+    dest: /etc/cloud/cloud.cfg.d/99-ansible.cfg
+
+- name: Set system hostname
+  ansible.builtin.hostname:
+    name: '{{ ansible_host }}'
+
+- name: Update hostname in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: "^127.0.1.1\\s+"
+    line: "127.0.1.1   {{ ansible_host }} {{ ansible_host | regex_replace('\\..*', '') }}"
+    insertafter: "127.0.0.1"
+
+- name: Update hostname in /etc/mailname
+  ansible.builtin.copy:
+    dest: /etc/mailname
+    content: "{{ ansible_host }}\n"

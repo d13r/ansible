@@ -1,11 +1,14 @@
-- ansible.builtin.import_tasks: dave-user.yml
-  tags: [dave-user]
-
-- ansible.builtin.import_tasks: dotfiles.yml
-  tags: [dotfiles]
+- ansible.builtin.import_tasks: hostname.yml
+  tags: [hostname]
 
 - ansible.builtin.import_tasks: locales.yml
   tags: [locales]
 
 - ansible.builtin.import_tasks: install.yml
   tags: [install]
+
+- ansible.builtin.import_tasks: dave-user.yml
+  tags: [dave-user]
+
+- ansible.builtin.import_tasks: dotfiles.yml
+  tags: [dotfiles]
