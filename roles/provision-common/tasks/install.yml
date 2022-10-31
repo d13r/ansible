@@ -10,6 +10,7 @@
       - iotop
       - jq
       - mlocate
+      - molly-guard # Prevent accidental shutdowns
       - moreutils # Includes sponge
       - ncdu
       - net-tools # Includes netstat
@@ -20,6 +21,7 @@
       - whois
     state: present
     update_cache: yes
+  tags: [apt]
 
 - name: Install/upgrade Delta
   ansible.builtin.apt:
