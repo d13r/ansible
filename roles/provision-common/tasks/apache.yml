@@ -1,0 +1,79 @@
+- name: Create Let's Encrypt certificate directories
+  ansible.builtin.file:
+    path: '{{ item.0 }}'
+    state: directory
+    owner: root
+    group: ssl-cert
+    mode: '{{ item.1 }}'
+  loop:
+    - ['/etc/letsencrypt', '0755'] # Must be readable by Apache
+    - ['/etc/letsencrypt/live', '0750'] # Should not be readable
+    - ['/etc/letsencrypt/live/{{ ansible_host }}', '0750']
+
+# We need Apache configured before we can get a Let's Encrypt certificate, but
+# it will error out if the certificate file doesn't exist. So we use a
+# self-signed certificate to bootstrap it, then replace it later.
+- name: Install temporary self-signed certificate for Let's Encrypt bootstrap
+  ansible.builtin.copy:
+    remote_src: yes
+    src: /etc/ssl/{{ item.0 }}
+    dest: /etc/letsencrypt/live/{{ ansible_host }}/{{ item.1 }}
+    force: no
+  loop:
+    - ['certs/ssl-cert-snakeoil.pem', 'fullchain.pem']
+    - ['private/ssl-cert-snakeoil.key', 'privkey.pem']
+
+- name: Disable mpm_prefork for Apache
+  community.general.apache2_module:
+    name: mpm_prefork # Conflicts with http2
+    state: absent
+    ignore_configcheck: true # It will be invalid until mpm_event is activated, below
+
+- name: Enable mpm_event for Apache
+  community.general.apache2_module:
+    name: mpm_event
+    state: present
+  notify: Restart Apache
+
+- name: Enable Apache modules
+  community.general.apache2_module:
+    name: '{{ item }}'
+  loop:
+    - actions
+    - expires
+    - headers
+    - http2
+    - info
+    - proxy_http
+    - proxy_wstunnel
+    - remoteip
+    - rewrite
+    - ssl
+  notify: Restart Apache
+
+- name: Configure Apache
+  ansible.builtin.template:
+    src: apache/common.conf.j2
+    # The 'z_' prefix puts it last alphabetically, so it takes precedence
+    dest: /etc/apache2/conf-enabled/z_ansible.conf
+    mode: 0644
+  notify: Reload Apache configuration
+
+- name: Configure default Apache site
+  ansible.builtin.template:
+    src: apache/default-site.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+    mode: 0644
+  notify: Reload Apache configuration
+
+- name: Create /var/www/default-site/ directory
+  ansible.builtin.file:
+    path: /var/www/default-site
+    state: directory
+    mode: 0755
+
+- name: Copy Apache default page
+  ansible.builtin.template:
+    src: apache/default-site/index.html.j2
+    dest: /var/www/default-site/index.html
+    mode: 0644

@@ -1,0 +1,9 @@
+- name: Reload Apache configuration
+  ansible.builtin.systemd:
+    name: apache2
+    state: reloaded
+
+- name: Restart Apache
+  ansible.builtin.systemd:
+    name: apache2
+    state: restarted

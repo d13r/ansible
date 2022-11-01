@@ -18,3 +18,6 @@
 
 - ansible.builtin.import_tasks: dotfiles.yml
   tags: [dotfiles]
+
+- ansible.builtin.import_tasks: apache.yml
+  tags: [apache]

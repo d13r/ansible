@@ -1,0 +1,30 @@
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+#
+# {{ ansible_managed }}
+#
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+
+<VirtualHost *:443>
+
+    SSLEngine on
+
+    ServerName default
+
+    DocumentRoot /var/www/default-site/
+    ErrorDocument 404 /index.html
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+<Directory /var/www/default-site>
+
+    Options FollowSymLinks
+    AllowOverride All
+
+</Directory>

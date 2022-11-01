@@ -3,6 +3,8 @@
     name:
       - acl # For Ansible - https://docs.ansible.com/ansible-core/2.12/user_guide/become.html#risks-of-becoming-an-unprivileged-user
       - anacron # Run daily cron tasks if missed
+      - apache2
+      - apache2-utils # Includes htpasswd
       - bat
       - chrony # NTP
       - dos2unix

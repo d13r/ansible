@@ -1,6 +1,6 @@
 - name: Configure sudo
   ansible.builtin.template:
-    src: sudoers.j2
+    src: sudo/sudoers.j2
     dest: /etc/sudoers.d/ansible
     mode: 0440
     validate: visudo -cf %s

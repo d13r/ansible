@@ -1,6 +1,6 @@
 - name: Disable cloud-init automatic hostname
   ansible.builtin.template:
-    src: cloud.cfg.j2
+    src: hostname/cloud.cfg.j2
     dest: /etc/cloud/cloud.cfg.d/99-ansible.cfg
 
 - name: Set system hostname
