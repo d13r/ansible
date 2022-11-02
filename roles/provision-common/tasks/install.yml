@@ -11,11 +11,14 @@
       - fzf
       - iotop
       - jq
+      - mariadb-client
+      - mariadb-server
       - mlocate
       - molly-guard # Prevent accidental shutdowns
       - moreutils # Includes sponge
       - ncdu
       - net-tools # Includes netstat
+      - python3-mysqldb # For Ansible - https://docs.ansible.com/ansible/latest/collections/community/mysql/mysql_user_module.html#ansible-collections-community-mysql-mysql-user-module
       - python3-pip
       - pv
       - rename

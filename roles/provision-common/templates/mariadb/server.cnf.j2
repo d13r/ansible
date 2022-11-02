@@ -1,0 +1,20 @@
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+#
+# {{ ansible_managed }}
+#
+#*******************************************************************************
+#*******************************************************************************
+#*******************************************************************************
+
+[mysqld]
+
+{% if is_dev %}
+    # Make the server accessible remotely
+    bind-address = 0.0.0.0
+{% endif %}
+
+# Strict mode
+# https://github.com/laravel/framework/blob/0de8734170de48926e5a65c44e898b7078a0da0e/src/Illuminate/Database/Connectors/MySqlConnector.php#L203
+sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"

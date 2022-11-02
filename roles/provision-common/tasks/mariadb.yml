@@ -1,0 +1,48 @@
+- name: Change MariaDB root password (if required)
+  mysql_user:
+    name: root
+    host: localhost
+    password: '{{ mysql_root_password }}'
+    priv: '*.*:ALL,GRANT'
+  ignore_errors: yes # In case the password has been changed already but .my.cnf wasn't written
+  no_log: true
+
+# This must be straight after the root password is changed, because subsequent commands will read it
+- name: Configure MariaDB client for root user
+  ansible.builtin.template:
+    src: mariadb/client.cnf.j2
+    dest: ~root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    is_system_config: false
+
+- name: Configure MariaDB client for system scripts
+  ansible.builtin.template:
+    src: mariadb/client.cnf.j2
+    dest: /etc/mysql/debian.cnf
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    is_system_config: true
+
+- name: Configure MariaDB client for 'dave' user
+  ansible.builtin.template:
+    src: mariadb/client.cnf.j2
+    dest: /home/dave/.my.cnf
+    owner: dave
+    group: dave
+    mode: 0600
+  vars:
+    is_system_config: false
+
+- name: Configure MariaDB server
+  ansible.builtin.template:
+    src: mariadb/server.cnf.j2
+    dest: /etc/mysql/mariadb.conf.d/ansible.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart MariaDB

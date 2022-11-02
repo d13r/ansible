@@ -7,3 +7,8 @@
   ansible.builtin.systemd:
     name: apache2
     state: restarted
+
+- name: Restart MariaDB
+  ansible.builtin.systemd:
+    name: mysql
+    state: restarted
