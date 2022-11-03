@@ -39,6 +39,11 @@ ServerTokens Prod
 SSLCertificateFile /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem
 SSLCertificateKeyFile /etc/letsencrypt/live/{{ ansible_host }}/privkey.pem
 
+# Default PHP version
+<FilesMatch "\.php$">
+    SetHandler "proxy:unix:/run/php/php8.1-fpm.sock|fcgi://localhost"
+</FilesMatch>
+
 
 #===============================================================================
 # SSL hardening

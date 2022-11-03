@@ -1,0 +1,72 @@
+;*******************************************************************************
+;*******************************************************************************
+;*******************************************************************************
+;
+; {{ ansible_managed }}
+;
+;*******************************************************************************
+;*******************************************************************************
+;*******************************************************************************
+
+;===============================================================================
+; Error handling
+;===============================================================================
+
+error_reporting = E_ALL
+log_errors = on
+
+{% if is_dev %}
+
+    display_errors = on
+    display_startup_errors = on
+    assert.exception = 1
+    zend.assertions = 1
+
+{% else %}
+
+    display_errors = off
+    display_startup_errors = off
+    assert.exception = 0
+    zend.assertions = -1
+
+{% endif %}
+
+
+;===============================================================================
+; Caching
+;===============================================================================
+
+{% if is_dev %}
+
+    ; Disable caching .user.ini files in development
+    user_ini.cache_ttl = 0
+
+    ; Revalidate on every request
+    opcache.revalidate_freq = 0
+
+{% endif %}
+
+
+;===============================================================================
+; Xdebug
+;===============================================================================
+; https://xdebug.org/docs/all_settings
+
+{% if is_dev %}
+
+    xdebug.mode = debug,develop
+
+    ; Enable colour output in CLI (when support is detected)
+    xdebug.cli_color = 1
+
+    ; Increase the maximum nesting level from 100
+    xdebug.max_nesting_level = 256
+
+    ; Profiler settings (?XDEBUG_TRIGGER=1 to enable)
+    xdebug.output_dir = /tmp/xdebug
+    xdebug.profiler_output_name = cachegrind.out.%u
+
+    ; Show variables in local scope when there's an error
+    xdebug.show_local_vars = 1
+
+{% endif %}

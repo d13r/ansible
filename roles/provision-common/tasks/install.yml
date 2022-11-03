@@ -1,3 +1,8 @@
+- name: Add PHP PPA repository
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/ppa.launchpad.net_ondrej_php.gpg] http://ppa.launchpad.net/ondrej/php/ubuntu {{ ansible_facts.distribution_release }} main
+    mode: 0644
+
 - name: Install common APT packages
   ansible.builtin.apt:
     name:
@@ -11,8 +16,16 @@
       - fzf
       - iotop
       - jq
+      - libapache2-mod-fcgid
       - mariadb-client
       - mariadb-server
+      - php8.1-cli
+      - php8.1-dev
+      - php8.1-fpm
+      - php8.1-mysql
+      - php8.1-opcache
+      - php8.1-readline
+      - php-pear
       - mlocate
       - molly-guard # Prevent accidental shutdowns
       - moreutils # Includes sponge

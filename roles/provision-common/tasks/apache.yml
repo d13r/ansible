@@ -44,6 +44,7 @@
     - headers
     - http2
     - info
+    - proxy_fcgi
     - proxy_http
     - proxy_wstunnel
     - remoteip

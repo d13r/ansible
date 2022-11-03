@@ -6,6 +6,7 @@
       - fonts-firacode    # My preferred font for PhpStorm
       - libgdm-dev        # For PhpStorm
       - openjfx           # For rendering Markdown in PhpStorm
+      - php8.1-xdebug
     state: present
   tags: [apt]
 

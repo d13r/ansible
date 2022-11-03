@@ -1,0 +1,48 @@
+- name: Configure PHP 8.1 CLI
+  ansible.builtin.template:
+    src: php/php.ini.j2
+    dest: /etc/php/8.1/cli/conf.d/ansible.ini
+
+- name: Configure PHP 8.1 FPM
+  ansible.builtin.template:
+    src: php/php.ini.j2
+    dest: /etc/php/8.1/fpm/conf.d/99-ansible.ini
+  notify: Restart PHP 8.1 FPM
+
+- name: Install Composer
+  ansible.builtin.shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+    warn: no
+
+- name: Set up cron script to upgrade Composer daily
+  ansible.builtin.template:
+    src: php/upgrade-composer.sh.j2
+    dest: /etc/cron.daily/upgrade-composer
+    mode: 0755
+
+- name: Install/update PsySH
+  ansible.builtin.git:
+    # I'm not sure if using the main branch is the best idea, but it's mentioned
+    # in the documentation[1], and it does make it easy to upgrade. Unfortunately,
+    # PsySH doesn't have a "self-update" command like Composer.
+    repo: https://github.com/bobthecow/psysh.git
+    dest: /opt/psysh
+  tags: [psysh]
+
+- name: Install/update PsySH dependencies
+  community.general.composer:
+    command: update
+    working_dir: /opt/psysh
+    executable: /usr/bin/php8.1 # Use the oldest installed version to ensure compatibility with all PHP versions
+  environment:
+    # TODO: Change directory ownership then run as a non-root user!
+    COMPOSER_ALLOW_SUPERUSER: 1
+  tags: [psysh]
+
+- name: Create a symlink to PsySH
+  ansible.builtin.file:
+    src: /opt/psysh/bin/psysh
+    dest: /usr/local/bin/psysh
+    state: link
+  tags: [psysh]

@@ -24,3 +24,6 @@
 
 - ansible.builtin.import_tasks: mariadb.yml
   tags: [mariadb]
+
+- ansible.builtin.import_tasks: php.yml
+  tags: [php]
