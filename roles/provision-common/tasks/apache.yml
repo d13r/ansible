@@ -78,3 +78,8 @@
     src: apache/default-site/index.html.j2
     dest: /var/www/default-site/index.html
     mode: 0644
+
+- name: Delete /var/www/html/ (Ubuntu default site)
+  ansible.builtin.file:
+    path: /var/www/html
+    state: absent
