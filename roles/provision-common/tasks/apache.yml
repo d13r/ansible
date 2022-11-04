@@ -67,6 +67,13 @@
     mode: 0644
   notify: Reload Apache configuration
 
+- name: Change ownership of /var/www/ directory
+  ansible.builtin.file:
+    path: /var/www
+    state: directory
+    group: www-data
+    mode: 0775
+
 - name: Create /var/www/default-site/ directory
   ansible.builtin.file:
     path: /var/www/default-site
