@@ -37,6 +37,7 @@
       - rename
       - tree
       - whois
+      - zip # Required by Composer
     state: present
     update_cache: yes
   tags: [apt]
