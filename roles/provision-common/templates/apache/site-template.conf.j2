@@ -1,0 +1,28 @@
+<VirtualHost *:443>
+
+    SSLEngine on
+
+    ServerName example.djm.me
+    #ServerAlias www.example.com
+
+    DocumentRoot /var/www/example/
+
+    #ProxyPass / http://localhost:3000/ nocanon
+    #ProxyPassReverse / http://localhost:3000/
+    #RequestHeader add X-Forwarded-Proto "https"
+
+    ErrorLog ${APACHE_LOG_DIR}/example-error.log
+    CustomLog ${APACHE_LOG_DIR}/example-access.log combined
+
+    #SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem
+    #SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+
+</VirtualHost>
+
+<Directory /var/www/example/>
+
+    <FilesMatch "\.php$">
+        SetHandler "proxy:unix:/run/php/php8.1-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+
+</Directory>

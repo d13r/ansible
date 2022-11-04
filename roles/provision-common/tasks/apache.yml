@@ -90,3 +90,9 @@
   ansible.builtin.file:
     path: /var/www/html
     state: absent
+
+- name: Configure default Apache site
+  ansible.builtin.template:
+    src: apache/site-template.conf.j2
+    dest: /etc/apache2/sites-available/_template.conf
+    mode: 0644
