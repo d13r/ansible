@@ -30,6 +30,12 @@
       - libapache2-mod-passenger
       - mariadb-client
       - mariadb-server
+      - mlocate
+      - molly-guard # Prevent accidental shutdowns
+      - moreutils # Includes sponge
+      - ncdu
+      - net-tools # Includes netstat
+      - php-pear
       - php8.1-cli
       - php8.1-dev
       - php8.1-fpm
@@ -37,15 +43,9 @@
       - php8.1-mysql
       - php8.1-opcache
       - php8.1-readline
-      - php-pear
-      - mlocate
-      - molly-guard # Prevent accidental shutdowns
-      - moreutils # Includes sponge
-      - ncdu
-      - net-tools # Includes netstat
+      - pv
       - python3-mysqldb # For Ansible - https://docs.ansible.com/ansible/latest/collections/community/mysql/mysql_user_module.html#ansible-collections-community-mysql-mysql-user-module
       - python3-pip
-      - pv
       - rename
       - ruby
       - ruby-dev
