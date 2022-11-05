@@ -19,6 +19,7 @@
       - apache2
       - apache2-utils # Includes htpasswd
       - bat
+      - bundler
       - chrony # NTP
       - dos2unix
       - ffmpeg # For Gallery
@@ -26,6 +27,7 @@
       - iotop
       - jq
       - libapache2-mod-fcgid
+      - libapache2-mod-passenger
       - mariadb-client
       - mariadb-server
       - php8.1-cli
@@ -45,6 +47,8 @@
       - python3-pip
       - pv
       - rename
+      - ruby
+      - ruby-dev
       - snapd
       - tree
       - unattended-upgrades
