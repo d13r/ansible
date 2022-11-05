@@ -1,4 +1,18 @@
 - hosts: all
+
+  pre_tasks:
+
+    - name: Gather facts
+      ansible.builtin.gather_facts:
+      tags: always
+
+    # Sanity check
+    - name: Check Operating System version
+      ansible.builtin.fail:
+        msg: '{{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }} is unsupported'
+      when: ansible_facts.distribution != 'Ubuntu' or ansible_facts.distribution_version|float != 22.04
+      tags: always
+
   roles:
 
     - role: provision-common
