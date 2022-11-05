@@ -1,0 +1,19 @@
+#
+# This playbook can be used for one-off cleanup tasks
+#
+- hosts: all
+  tasks:
+
+#    - ansible.builtin.apt:
+#        name:
+#          - example
+#        state: absent
+
+    - ansible.builtin.file:
+        path: /var/www/default-site/index.html
+        state: absent
+
+#    - community.general.snap:
+#        name:
+#          - example
+#        state: absent

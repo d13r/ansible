@@ -80,8 +80,8 @@
 
 - name: Copy Apache default page
   ansible.builtin.template:
-    src: apache/default-site/index.html.j2
-    dest: /var/www/default-site/index.html
+    src: apache/default-site/404.html.j2
+    dest: /var/www/default-site/404.html
     mode: 0644
 
 - name: Delete /var/www/html/ (Ubuntu default site)
@@ -89,7 +89,7 @@
     path: /var/www/html
     state: absent
 
-- name: Configure default Apache site
+- name: Create Apache site config file template
   ansible.builtin.template:
     src: apache/site-template.conf.j2
     dest: /etc/apache2/sites-available/_template.conf

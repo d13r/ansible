@@ -15,7 +15,11 @@
     ServerName default
 
     DocumentRoot /var/www/default-site/
-    ErrorDocument 404 /index.html
+    ErrorDocument 404 /404.html
+
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !=/404.html
+    RewriteRule ^ /404.html [R=404,L]
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
