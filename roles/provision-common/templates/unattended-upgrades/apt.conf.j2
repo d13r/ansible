@@ -1,0 +1,35 @@
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+//
+// {{ ansible_managed }}
+//
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+
+// Based on:
+// /etc/apt/apt.conf.d/50unattended-upgrades
+// https://wiki.debian.org/UnattendedUpgrades
+// https://www.linuxcapable.com/how-to-setup-configure-unattended-upgrades-on-ubuntu-20-04/
+
+// Activate unattended upgrades
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+
+// Upgrade all packages, not just security updates
+// https://unix.stackexchange.com/a/427190
+Unattended-Upgrade::Origins-Pattern {
+    "origin=*";
+};
+
+// Remove automatically installed but no longer needed dependencies (apt auto-remove)
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+
+// Send me an email if it fails
+Unattended-Upgrade::Mail "d@djm.me";
+Unattended-Upgrade::MailReport "only-on-error";
+
+// Automatically reboot, if required (e.g. Kernel upgrades)
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "03:30";

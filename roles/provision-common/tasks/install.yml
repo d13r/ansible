@@ -45,6 +45,7 @@
       - rename
       - snapd
       - tree
+      - unattended-upgrades
       - whois
       - zip # Required by Composer
     state: present

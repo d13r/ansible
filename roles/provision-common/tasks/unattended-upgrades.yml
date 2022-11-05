@@ -1,0 +1,26 @@
+- name: Configure Unattended Upgrades
+  ansible.builtin.template:
+    src: unattended-upgrades/apt.conf.j2
+    dest: /etc/apt/apt.conf.d/99ansible-unattended-upgrades
+
+- name: Create Unattended Upgrades timer config directories
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+  loop:
+    - /etc/systemd/system/apt-daily.timer.d
+    - /etc/systemd/system/apt-daily-upgrade.timer.d
+
+- name: Configure Unattended Upgrades download timer
+  ansible.builtin.template:
+    src: unattended-upgrades/timer-download.conf.j2
+    # This one downloads the packages in preparation for upgrading - https://askubuntu.com/a/831206/29806
+    dest: /etc/systemd/system/apt-daily.timer.d/override.conf
+  notify: Restart Unattended Upgrades download timer
+
+- name: Configure Unattended Upgrades upgrade timer
+  ansible.builtin.template:
+    src: unattended-upgrades/timer-upgrade.conf.j2
+    # This one installs the upgrades that were downloaded earlier - https://askubuntu.com/a/1112170/29806
+    dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+  notify: Restart Unattended Upgrades upgrade timer

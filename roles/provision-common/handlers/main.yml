@@ -18,3 +18,15 @@
     name: php8.1-fpm
     state: restarted
     daemon_reload: yes
+
+- name: Restart Unattended Upgrades download timer
+  ansible.builtin.systemd:
+    name: apt-daily.timer
+    state: restarted
+    daemon_reload: yes
+
+- name: Restart Unattended Upgrades upgrade timer
+  ansible.builtin.systemd:
+    name: apt-daily-upgrade.timer
+    state: restarted
+    daemon_reload: yes
