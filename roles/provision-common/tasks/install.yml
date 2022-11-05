@@ -21,6 +21,7 @@
       - bat
       - chrony # NTP
       - dos2unix
+      - ffmpeg # For Gallery
       - fzf
       - iotop
       - jq
@@ -30,7 +31,7 @@
       - php8.1-cli
       - php8.1-dev
       - php8.1-fpm
-      - php8.1-gd
+      - php8.1-gd # For Gallery
       - php8.1-mysql
       - php8.1-opcache
       - php8.1-readline
