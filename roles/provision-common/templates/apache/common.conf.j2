@@ -37,8 +37,8 @@ ServerTokens Prod
 </Files>
 
 # Default SSL certificate
-SSLCertificateFile /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem
-SSLCertificateKeyFile /etc/letsencrypt/live/{{ ansible_host }}/privkey.pem
+SSLCertificateFile /etc/letsencrypt/live/default/fullchain.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/default/privkey.pem
 
 # Default PHP version
 <FilesMatch "\.php$">

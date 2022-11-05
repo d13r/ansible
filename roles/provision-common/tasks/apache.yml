@@ -2,13 +2,11 @@
   ansible.builtin.file:
     path: '{{ item.0 }}'
     state: directory
-    owner: root
-    group: ssl-cert
     mode: '{{ item.1 }}'
   loop:
     - ['/etc/letsencrypt', '0755'] # Must be readable by Apache
     - ['/etc/letsencrypt/live', '0750'] # Should not be readable
-    - ['/etc/letsencrypt/live/{{ ansible_host }}', '0750']
+    - ['/etc/letsencrypt/live/default', '0750']
 
 # We need Apache configured before we can get a Let's Encrypt certificate, but
 # it will error out if the certificate file doesn't exist. So we use a
@@ -17,7 +15,7 @@
   ansible.builtin.copy:
     remote_src: yes
     src: /etc/ssl/{{ item.0 }}
-    dest: /etc/letsencrypt/live/{{ ansible_host }}/{{ item.1 }}
+    dest: /etc/letsencrypt/live/default/{{ item.1 }}
     force: no
   loop:
     - ['certs/ssl-cert-snakeoil.pem', 'fullchain.pem']

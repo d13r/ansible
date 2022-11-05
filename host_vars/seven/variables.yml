@@ -1,0 +1,5 @@
+ansible_host: seven.djm.me
+
+ssl_domains:
+  - djm.me
+  - '*.djm.me'

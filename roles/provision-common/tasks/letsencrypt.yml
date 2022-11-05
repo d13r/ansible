@@ -1,0 +1,73 @@
+- name: Install Certbot
+  community.general.snap:
+    name: certbot
+    options:
+      - trust-plugin-with-root=ok
+    classic: yes
+    state: present
+  tags: [snap]
+
+# This has to be a separate task because 'trust-plugin-with-root' must be set first
+- name: Install Certbot Cloudflare plugin
+  community.general.snap:
+    name: certbot-dns-cloudflare
+    classic: yes
+    state: present
+  tags: [snap]
+
+- name: Create Let's Encrypt webroot directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt/webroot
+    state: directory
+    mode: 0755
+
+- name: Create Let's Encrypt deploy hooks directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    recurse: true
+    mode: 0755
+
+- name: Create Let's Encrypt deploy hook
+  ansible.builtin.template:
+    src: letsencrypt/deploy-hook.sh.j2
+    dest: /etc/letsencrypt/renewal-hooks/deploy/ansible
+    mode: 0755
+
+- name: Create Let's Encrypt credentials directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt/credentials
+    state: directory
+    mode: 0700
+
+- name: Create Let's Encrypt credentials file
+  ansible.builtin.template:
+    src: letsencrypt/credentials-cloudflare.ini.j2
+    dest: /etc/letsencrypt/credentials/cloudflare.ini
+    mode: 0700
+
+- name: Flush handlers to ensure Apache is running
+  ansible.builtin.meta: flush_handlers
+
+- name: Delete temporary self-signed certificate # See apache.yml
+  ansible.builtin.shell: |
+    if [ ! -d /etc/letsencrypt/archive/default ]; then
+      rm -rfv /etc/letsencrypt/live/default
+    fi
+  register: result
+  changed_when: "result.stdout != ''"
+
+- name: Generate default SSL certificate
+  ansible.builtin.shell: |
+    certbot certonly \
+      --non-interactive \
+      --cert-name default \
+      --domains "{{ ssl_domains | join(',') }}" \
+      --dns-cloudflare \
+      --dns-cloudflare-credentials /etc/letsencrypt/credentials/cloudflare.ini \
+      --dns-cloudflare-propagation-seconds 30 \
+      --email d@djm.me \
+      --agree-tos
+  register: result
+  changed_when: "'Certificate is saved' in result.stdout"
+  notify: Reload Apache configuration

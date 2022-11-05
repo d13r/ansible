@@ -1,0 +1,5 @@
+ansible_host: kara.djm.me
+
+ssl_domains:
+  - kara.djm.me
+  - '*.kara.djm.me'

@@ -22,6 +22,9 @@
 - ansible.builtin.import_tasks: apache.yml
   tags: [apache]
 
+- ansible.builtin.import_tasks: letsencrypt.yml
+  tags: [letsencrypt]
+
 - ansible.builtin.import_tasks: mariadb.yml
   tags: [mariadb]
 
