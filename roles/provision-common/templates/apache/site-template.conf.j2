@@ -3,9 +3,9 @@
     SSLEngine on
 
     ServerName example.djm.me
-    #ServerAlias www.example.com
+    #ServerAlias www.example.djm.me
 
-    DocumentRoot /var/www/example/
+    DocumentRoot /var/www/example/public/
 
     #ProxyPass / http://localhost:3000/ nocanon
     #ProxyPassReverse / http://localhost:3000/
@@ -14,8 +14,8 @@
     ErrorLog ${APACHE_LOG_DIR}/example-error.log
     CustomLog ${APACHE_LOG_DIR}/example-access.log combined
 
-    #SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem
-    #SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+    #SSLCertificateFile /etc/letsencrypt/live/example.djm.me/fullchain.pem
+    #SSLCertificateKeyFile /etc/letsencrypt/live/example.djm.me/privkey.pem
 
 </VirtualHost>
 
