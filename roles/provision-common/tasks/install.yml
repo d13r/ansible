@@ -49,6 +49,7 @@
       - libmariadb-dev # For Redmine (mysql2 gem)
       - libffi-dev # For Node.js
       - libssl-dev # For Node.js
+      - mailutils # 'mail' command
       - mariadb-client
       - mariadb-server
       - mlocate
