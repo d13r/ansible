@@ -23,12 +23,21 @@ Enter the vault password and save the file.
 
 ## Usage
 
-Test the connection to a specific server and print variables:
+### Test
+
+Test connections to all servers:
 
 ```bash
-# '-l' is shorthand for '--limit'
-ansible-playbook debug.yml -l <host>
+ansible all -m ping
 ```
+
+Print variables for a specific server:
+
+```bash
+ansible <host> -m setup
+```
+
+### Playbooks
 
 Run the provisioner on all servers:
 
@@ -36,15 +45,84 @@ Run the provisioner on all servers:
 ansible-playbook provision.yml
 ```
 
+Run the provisioner on a specific group or a single host:
+
+```bash
+ansible-playbook provision.yml -l dev
+ansible-playbook provision.yml -l kara
+```
+
 Run tasks with a specific tag (or multiple tags):
 
 ```bash
 ansible-playbook provision.yml -t dev
 ansible-playbook provision.yml -t install
-ansible-playbook provision.yml -t 'dev,&install'
+ansible-playbook provision.yml -t 'dev,&install' # Only tasks with both 'dev' and 'install'
 
+# To check the available tags:
 ansible-playbook provision.yml --list-tags
 ```
+
+### Running ad hoc commands
+
+Start the interactive console:
+
+```bash
+ansible-console
+
+# Select a subset of servers (a group or a single host)
+ansible-console dev
+ansible-console kara
+```
+
+Switch group/host interactively:
+
+```bash
+cd dev
+cd kara
+cd all
+```
+
+List the servers that are currently selected:
+
+```bash
+list
+```
+
+Run an arbitrary shell command on all/selected servers:
+
+```bash
+echo "Test"
+
+# If the first word would be interpreted as a module name, prefix it with "!" (or "shell"):
+!apt update
+```
+
+Uninstall a package (or multiple) from all/selected servers:
+
+```bash
+apt name=example1,example2 state=absent
+snap name=example1,example2 state=absent
+```
+
+Delete a file/directory from all/selected servers:
+
+```bash
+file path=/example state=absent
+```
+
+Commands can also be run directly from Bash, rather than using Ansible console:
+
+```bash
+ansible all -m shell -a 'echo "Test"'
+ansible all -m apt -a 'name=example1,example2 state=absent'
+ansible all -m snap -a 'name=example1,example2 state=absent'
+ansible all -m file -a 'path=/example state=absent'
+```
+
+Replace `all` with a group or host name if required.
+
+### Passwords
 
 Edit a passwords file:
 

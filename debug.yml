@@ -1,9 +1,0 @@
-- hosts: all
-  tasks:
-
-    - name: Gather facts
-      ansible.builtin.gather_facts:
-
-    - name: Display hostvars
-      ansible.builtin.debug:
-        var: hostvars[inventory_hostname]
