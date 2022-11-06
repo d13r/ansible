@@ -111,6 +111,12 @@ Delete a file/directory from all/selected servers:
 file path=/example state=absent
 ```
 
+Reboot (and wait for each server to come back up):
+
+```bash
+reboot
+```
+
 Commands can also be run directly from Bash, rather than using Ansible console:
 
 ```bash
@@ -118,6 +124,7 @@ ansible all -m shell -a 'echo "Test"'
 ansible all -m apt -a 'name=example1,example2 state=absent'
 ansible all -m snap -a 'name=example1,example2 state=absent'
 ansible all -m file -a 'path=/example state=absent'
+ansible all -m reboot
 ```
 
 Replace `all` with a group or host name if required.

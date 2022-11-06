@@ -52,7 +52,6 @@
       - mariadb-client
       - mariadb-server
       - mlocate
-      - molly-guard # Prevent accidental shutdowns
       - moreutils # Includes sponge
       - ncdu
       - net-tools # Includes netstat
