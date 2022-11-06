@@ -1,15 +1,40 @@
 - name: Add/update APT keys
   apt_key: '{{ item }}'
   loop:
+    # Node.js (https://github.com/nodesource/distributions/blob/master/README.md#manual-installation)
+    - url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+      keyring: /etc/apt/keyrings/deb.nodesource.com.gpg
     # PHP PPA
     - keyserver: hkps://keyserver.ubuntu.com
       id: 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
       keyring: /etc/apt/keyrings/ppa.launchpad.net_ondrej_php.gpg
+    # Yarn (https://classic.yarnpkg.com/en/docs/install/#debian-stable)
+    - url: https://dl.yarnpkg.com/debian/pubkey.gpg
+      keyring: /etc/apt/keyrings/dl.yarnpkg.com.gpg
+  tags: [apt]
 
-- name: Add PHP PPA repository
+- name: Add custom APT repositories
   ansible.builtin.apt_repository:
-    repo: deb [signed-by=/etc/apt/keyrings/ppa.launchpad.net_ondrej_php.gpg] http://ppa.launchpad.net/ondrej/php/ubuntu {{ ansible_facts.distribution_release }} main
+    repo: deb [signed-by={{ item.keyring }}] {{ item.source }}
     mode: 0644
+  loop:
+    # Node.js (https://github.com/nodesource/distributions/blob/master/README.md#manual-installation)
+    - source: https://deb.nodesource.com/node_18.x {{ ansible_facts.distribution_release }} main
+      keyring: /etc/apt/keyrings/deb.nodesource.com.gpg
+    # PHP PPA
+    - source: http://ppa.launchpad.net/ondrej/php/ubuntu {{ ansible_facts.distribution_release }} main
+      keyring: /etc/apt/keyrings/ppa.launchpad.net_ondrej_php.gpg
+    # Yarn (https://classic.yarnpkg.com/en/docs/install/#debian-stable)
+    - source: http://dl.yarnpkg.com/debian/ stable main
+      keyring: /etc/apt/keyrings/dl.yarnpkg.com.gpg
+  tags: [apt]
+
+#- name: Configure APT preferences
+#  ansible.builtin.template:
+#    src: install/apt-preferences.j2
+#    dest: /etc/apt/preferences.d/ansible
+#    mode: 0644
+#  tags: [apt]
 
 - name: Install common APT packages
   ansible.builtin.apt:
@@ -28,6 +53,9 @@
       - jq
       - libapache2-mod-fcgid
       - libapache2-mod-passenger
+      - libmariadb-dev # For Redmine (mysql2 gem)
+      - libffi-dev # For Node.js
+      - libssl-dev # For Node.js
       - mariadb-client
       - mariadb-server
       - mlocate
@@ -35,6 +63,7 @@
       - moreutils # Includes sponge
       - ncdu
       - net-tools # Includes netstat
+      - nodejs
       - php-pear
       - php8.1-cli
       - php8.1-dev
@@ -53,6 +82,7 @@
       - tree
       - unattended-upgrades
       - whois
+      - yarn
       - zip # Required by Composer
     state: present
     update_cache: yes
