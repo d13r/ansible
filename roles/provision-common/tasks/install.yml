@@ -29,13 +29,6 @@
       keyring: /etc/apt/keyrings/dl.yarnpkg.com.gpg
   tags: [apt]
 
-#- name: Configure APT preferences
-#  ansible.builtin.template:
-#    src: install/apt-preferences.j2
-#    dest: /etc/apt/preferences.d/ansible
-#    mode: 0644
-#  tags: [apt]
-
 - name: Install common APT packages
   ansible.builtin.apt:
     name:
