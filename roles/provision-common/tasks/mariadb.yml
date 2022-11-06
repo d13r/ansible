@@ -1,10 +1,10 @@
-- name: Change MariaDB root password (if required)
+- name: Set MariaDB root password for local access
   mysql_user:
     name: root
     host: localhost
     password: '{{ mysql_root_password }}'
     priv: '*.*:ALL,GRANT'
-  ignore_errors: yes # In case the password has been changed already but .my.cnf wasn't written
+  ignore_errors: yes # Just in case the password has been changed already but .my.cnf wasn't written
   no_log: true
 
 # This must be straight after the root password is changed, because subsequent commands will read it
@@ -17,6 +17,15 @@
     mode: 0600
   vars:
     is_system_config: false
+
+- name: Set MariaDB root password for remote access
+  mysql_user:
+    name: root
+    host: '%'
+    password: '{{ mysql_root_password }}'
+    priv: '*.*:ALL,GRANT'
+  no_log: true
+  when: is_dev
 
 - name: Configure MariaDB client for system scripts
   ansible.builtin.template:

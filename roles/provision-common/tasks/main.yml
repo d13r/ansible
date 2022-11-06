@@ -29,7 +29,7 @@
   tags: [letsencrypt]
 
 - ansible.builtin.import_tasks: mariadb.yml
-  tags: [mariadb]
+  tags: [mariadb, mysql]
 
 - ansible.builtin.import_tasks: php.yml
   tags: [php]
