@@ -1,13 +1,13 @@
 - name: Configure Postfix
   ansible.builtin.template:
-    src: mail/postfix-main.cf.j2
+    src: postfix/main.cf.j2
     dest: /etc/postfix/main.cf
     mode: 0644
   notify: Reload Postfix
 
 - name: Configure Postfix SMTP relay authentication
   ansible.builtin.template:
-    src: mail/postfix-sasl_passwd.j2
+    src: postfix/sasl_passwd.j2
     dest: /etc/postfix/sasl_passwd
     mode: 0600
   notify: Reinitialise the Postfix SMTP relay authentication database

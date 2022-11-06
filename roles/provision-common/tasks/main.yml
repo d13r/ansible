@@ -10,8 +10,8 @@
 - ansible.builtin.import_tasks: install.yml
   tags: [install]
 
-- ansible.builtin.import_tasks: mail.yml
-  tags: [mail]
+- ansible.builtin.import_tasks: postfix.yml
+  tags: [postfix, mail]
 
 - ansible.builtin.import_tasks: unattended-upgrades.yml
   tags: [unattended-upgrades]
