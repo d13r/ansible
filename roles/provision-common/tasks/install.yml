@@ -84,6 +84,7 @@
 - name: Install/upgrade Python packages
   ansible.builtin.pip:
     name:
+      - crestic
       - httpie
       - thefuck
       - git+https://github.com/joh/when-changed#master
@@ -110,3 +111,13 @@
   args:
     creates: /usr/local/bin/lazygit
 
+- name: Install Restic
+  # Ubuntu APT repo only has Restic 0.12.1 as of 6 Nov 2022
+  # https://github.com/restic/restic/releases
+  ansible.builtin.shell: |
+    curl -fsSL https://github.com/restic/restic/releases/download/v0.14.0/restic_0.14.0_linux_amd64.bz2 \
+      | bzcat \
+      > /usr/local/bin/restic
+    chmod +x /usr/local/bin/restic
+  args:
+    creates: /usr/local/bin/restic
