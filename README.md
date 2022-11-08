@@ -92,10 +92,8 @@ list
 Run an arbitrary shell command on all/selected servers:
 
 ```bash
-echo "Test"
-
-# If the first word would be interpreted as a module name, prefix it with "!" (or "shell"):
-!apt update
+# The `!` is technically optional here, but if the command conflicts with a module name (e.g. `apt`) then the module will be executed instead of the command
+!echo "Test"
 ```
 
 Uninstall a package (or multiple) from all/selected servers:
