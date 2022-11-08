@@ -81,6 +81,15 @@
     update_cache: yes
   tags: [apt]
 
+- name: Install/upgrade Python packages
+  ansible.builtin.pip:
+    name:
+      - httpie
+      - thefuck
+      - git+https://github.com/joh/when-changed#master
+    state: latest
+  tags: [pip]
+
 - name: Install/upgrade Delta
   ansible.builtin.apt:
     # https://github.com/dandavison/delta/releases
@@ -98,12 +107,6 @@
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"v*([^"]+)".*/\1/')
     curl -fsSL "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
       | tar zx -C /usr/local/bin/ lazygit
-    creates=/usr/local/bin/lazygit
+  args:
+    creates: /usr/local/bin/lazygit
 
-- name: Install/upgrade Python packages
-  ansible.builtin.pip:
-    name:
-      - httpie
-      - thefuck
-      - git+https://github.com/joh/when-changed#master
-    state: latest
