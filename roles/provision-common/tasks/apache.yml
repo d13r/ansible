@@ -92,5 +92,14 @@
 - name: Create Apache site config file template
   ansible.builtin.template:
     src: apache/site-template.conf.j2
-    dest: /etc/apache2/sites-available/_template.conf
+    # Note: I put config files directly into sites-enabled, not sites-available, because it's so
+    # rare that I want to be able to disable a site, so the extra step isn't really necessary
+    dest: /etc/apache2/sites-enabled/template # Can't use .conf extension
     mode: 0644
+
+- name: Create a symlink to sites-enabled
+  ansible.builtin.file:
+    path: /var/www/_apache-config
+    state: link
+    src: /etc/apache2/sites-enabled
+
