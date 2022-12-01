@@ -60,6 +60,7 @@
       - p7zip-full
       - php-pear
       - php8.1-cli
+      - php8.1-curl
       - php8.1-dev
       - php8.1-fpm
       - php8.1-gd # For Gallery
