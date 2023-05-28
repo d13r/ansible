@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+RESET=$'\e[0m'
+BOLD=$'\e[1m'
+LCYAN=$'\e[96m'
+
+# Ensure Ansible is installed
+if ! command -v ansible &>/dev/null; then
+    echo "${LCYAN}${BOLD}Installing Ansible...${RESET}"
+
+    # https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-ubuntu
+    sudo apt update
+    sudo apt install -y software-properties-common
+    sudo add-apt-repository -y ppa:ansible/ansible
+    sudo apt install -y ansible
+
+    echo
+fi
+
+# Run Ansible
+echo "${LCYAN}${BOLD}Running Ansible...${RESET}"
+exec ansible-playbook --connection='local' --inventory='localhost,' "$@" playbook.yml
