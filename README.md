@@ -1,9 +1,8 @@
-# Emily - Development VM
+# Ansible Test
 
-VM settings:
+[Multipass](https://multipass.run/) VM settings:
 
 - **CPUs:** 8
 - **Disk:** 50G
 - **Memory:** 16G
 - **Image:** 22.04
-
